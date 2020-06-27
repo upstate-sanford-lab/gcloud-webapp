@@ -52,7 +52,6 @@ $(document).ready(function(){
 
     function toggle_visibility() {
         id="InformationTab";
-        console.log("something should be happening to " + id);
         var e = document.getElementById(id);
         if(e.style.display == 'block')
             e.style.display = 'none';
@@ -107,7 +106,9 @@ $(document).ready(function(){
                 c2.addEventListener("click", RespondClick);
                 ctx2.lineWidth = 3;
                 ctx2.strokeStyle = 'blue';
-                updateImages();
+                adc[0].onload = updateImages;
+                highb[0].onload = updateImages;
+                t2[0].onload = updateImages;
 
             }, error: function(){
                 alert("error receiving image data");
