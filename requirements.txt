@@ -1,0 +1,11 @@
+fastai==1.0.59
+Flask
+Flask-SQLAlchemy
+natsort
+numpy
+opencv-python
+Pillow
+pydicom
+SimpleITK                                                                                                                                                     
+sklearn
+Werkzeug
