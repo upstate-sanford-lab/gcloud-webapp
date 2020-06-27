@@ -8,15 +8,26 @@ sudo apt-get install libapache2-mod-wsgi python-dev   (modify apache to work wit
 cd /var/www/                                          (this is the preferred location for webapp location)
 mkdir webApp
 cd webApp
-pwd                                                   (this should show /var/www/webApp)
----"Move the webapp.wsgi file here"---
+
 mkdir webApp
 pwd                                                   (this should show /var/www/webApp/webApp)
 ---"Move the rest of the webApp structure here"---
-cd /etc/apache2/sites-available/
----"Move the webApp.conf file here"---
 
 ---"configure virtual environment"---
+pip install virtualenv
+virtualenv flaskk
+source mypython/bin/activate
+pip install -r requirements.txt
+deactivate
 
+cd ..
+pwd                                                   (this should show /var/www/webApp)
+---"Move the webapp.wsgi file here"---
+---"Update the path to virual environment"---
+---"Update secrete key"---
+
+cd /etc/apache2/sites-available/
+---"Move the webApp.conf file here"---
+---"Modify admin email"---
 
 sudo service apache2 restart
