@@ -11,7 +11,9 @@ cd webApp
 
 mkdir webApp
 pwd                                                   (this should show /var/www/webApp/webApp)
----"Move the rest of the webApp structure here"---
+---"Move the webApp structure here"---
+---"Modify __init__.py"---
+---"update the virtualenv path line 131"---
 
 ---"configure virtual environment"---
 pip install virtualenv
