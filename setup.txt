@@ -1,0 +1,22 @@
+sudo apt update
+sudo apt install apache2
+apache2 -version                                      (to see server version and build)
+sudo ufw app list                                     (to see fire wall services)
+sudo ufw allow 'Apache'                               (update firewall rules to allow apache)
+sudo systemctl status apache2                         (check status of apache)
+sudo apt-get install libapache2-mod-wsgi python-dev   (modify apache to work with flask)
+cd /var/www/                                          (this is the preferred location for webapp location)
+mkdir webApp
+cd webApp
+pwd                                                   (this should show /var/www/webApp)
+---"Move the webapp.wsgi file here"---
+mkdir webApp
+pwd                                                   (this should show /var/www/webApp/webApp)
+---"Move the rest of the webApp structure here"---
+cd /etc/apache2/sites-available/
+---"Move the webApp.conf file here"---
+
+---"configure virtual environment"---
+
+
+sudo service apache2 restart
