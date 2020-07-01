@@ -11,7 +11,7 @@ from predict import Predict
 from fastai.vision import *
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
-
+import logging
 
 def gather_files(path, type, wholeDIR):
     '''Return a list of directories containing files of a
@@ -128,7 +128,7 @@ def configureUserFiles():
 
 
 basePath = os.path.dirname(os.path.abspath(__file__))
-venvPath = "/home/AndrewGoldmann/.virtualenvs/flaskk/bin/python"
+venvPath = "python"
 
 
 app = Flask(__name__, instance_path=os.path.join(basePath, 'protected'))
@@ -318,33 +318,37 @@ def api_get_images():
 def api_receiveMarkup():
     flash("Segmentation received", "info")
     if request.method == 'POST':
-        try:
-            data = request.form.to_dict(flat=True)
-            markup = {}
-            # markup = {'primarySlice': int(data['primarySlice'])}
-            if 'slices' in data:
-                i = 0
-                for slice in data['slices'].split(", "):
-                    if slice in markup.keys():
-                        markup[slice]['x'].append(int(data['x'].split(", ")[i]))
-                        markup[slice]['y'].append(int(data['y'].split(", ")[i]))
-                    else:
-                        markup[slice] = {'x': [], 'y': []}
-                        markup[slice]['x'].append(int(data['x'].split(", ")[i]))
-                        markup[slice]['y'].append(int(data['y'].split(", ")[i]))
-                    i = i + 1
-                print(markup)
-                try:
-                    c = Predict()
-                    c.path = basePath
-                    c.dict = markup
-                    defaults.device = torch.device('cpu')
-                    c.learn = load_learner(os.path.join(basePath, 'static', 'model',))
-                    score = c.calculate_PIRADS()
-                except:
-                    return ("This version of the website is unable to report a PIRADS score")
-        except:
-            return ("please segment the region of the prostate that requires analysis")
+        # try:
+        data = request.form.to_dict(flat=True)
+        markup = {}
+        # markup = {'primarySlice': int(data['primarySlice'])}
+        if 'slices' in data:
+            i = 0
+            for slice in data['slices'].split(", "):
+                if slice in markup.keys():
+                    markup[slice]['x'].append(int(data['x'].split(", ")[i]))
+                    markup[slice]['y'].append(int(data['y'].split(", ")[i]))
+                else:
+                    markup[slice] = {'x': [], 'y': []}
+                    markup[slice]['x'].append(int(data['x'].split(", ")[i]))
+                    markup[slice]['y'].append(int(data['y'].split(", ")[i]))
+                i = i + 1
+            print(markup)
+            # try:
+            c = Predict()
+            c.path = basePath
+            c.user = session["user"]
+            c.dict = markup
+            defaults.device = torch.device('cpu')
+            c.learn = load_learner(os.path.join(basePath, 'static', 'model',))
+            score = c.calculate_PIRADS()
+            return ("Overall PIRADS Score is {}ish".format(score))
+                # except Exception as e:
+                #     print(e)
+                #     return ("This version of the website is unable to report a PIRADS score")
+        # except Exception as e:
+        #     print(e)
+        #     return ("please segment the region of the prostate that requires analysis")
     else:
         return "Error: submitted GET request. POST request required"
 
@@ -383,6 +387,13 @@ def deleteFiles():
     flash(str(total) + " total files deleted including accessory files", "info")
     return redirect(url_for("index"))
 
+@app.errorhandler(500)
+def server_error(e):
+    logging.exception('An error occurred during a request.')
+    return """
+    An internal error occurred: <pre>{}</pre>
+    See logs for full stacktrace.
+    """.format(e), 500
 
 @app.route("/view")
 @admin_required
