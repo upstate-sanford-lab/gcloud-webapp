@@ -8,7 +8,7 @@ from functools import wraps
 import natsort
 import subprocess
 from predict import Predict
-from fastai.vision import *
+#from fastai.vision import *
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 import logging
@@ -340,7 +340,7 @@ def api_receiveMarkup():
             c.user = session["user"]
             c.dict = markup
             defaults.device = torch.device('cpu')
-            c.learn = load_learner(os.path.join(basePath, 'static', 'model',))
+            #c.learn = load_learner(os.path.join(basePath, 'static', 'model',))
             score = c.calculate_PIRADS()
             return ("Overall PIRADS Score is {}ish".format(score))
                 # except Exception as e:
