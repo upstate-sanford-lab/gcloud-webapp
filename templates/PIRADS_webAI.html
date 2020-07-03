@@ -31,13 +31,13 @@
                 <input id = "T2" type="file" name="t2" multiple = "" webkitdirectory="" directory=""/>
             </div>
         </form>
-        <button id = "deleteFiles" onclick = "window.location.href='http://AndrewGoldmann.pythonanywhere.com/deleteFiles'"> Delete Files </button>
+        <button id = "deleteFiles" onclick = "window.location.href='/deleteFiles'"> Delete Files </button>
         <button id = "openInfo">Instructions</button>
         <div class = "userInfo_container">
             <ul class = "userInfo">
                 <li id = "username"> {{username}}: </li>
-                <li> <a href="http://AndrewGoldmann.pythonanywhere.com/logout" style = "color: black"> Logout </a> </li>
-                <li> <a href="http://AndrewGoldmann.pythonanywhere.com/deleteAccount" style = "color: red"> Delete Account </a></li>
+                <li> <a href="/logout" style = "color: black"> Logout </a> </li>
+                <li> <a href="/deleteAccount" style = "color: red"> Delete Account </a></li>
             </ul>
             <div id="flashBox">
                 {% with messages = get_flashed_messages(with_categories=true) %}
