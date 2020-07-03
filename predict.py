@@ -16,10 +16,10 @@ import cv2 #opencv-python 4.1.0.25
 from sklearn.preprocessing import MinMaxScaler
 #import imageio #2.5.0
 #import scipy #1.3.0
-#import random
+import random
 
 #fastai v1.0.59
-from fastai.vision import *
+#from fastai.vision import *
 #from fastai.basic_train import *
 
 class Predict:
@@ -29,6 +29,7 @@ class Predict:
 
     def __init__(self):
         self.path = None
+        self.user = None
         self.dict = None
         self.learn = None
 
@@ -45,8 +46,8 @@ class Predict:
         #iterate over tumors and calculate
         sum_pred = 0
         img_num = 0
-        for image in sorted(os.listdir(os.path.join(os.path.join(self.path, 'protected','jpg_tumor'), 'tumor'))):
-            img = open_image(os.path.join(os.path.join(self.path,'protected' ,'jpg_tumor'), 'tumor', image))
+        for image in sorted(os.listdir(os.path.join(os.path.join(self.path, 'protected', self.user,'jpg_tumor'), 'tumor'))):
+            img = open_image(os.path.join(os.path.join(self.path,'protected' , self.user, 'jpg_tumor'), 'tumor', image))
             pred_class, pred_idx, outputs = learn.predict(img)
             sum_pred += int(str(pred_class).split('_')[1])
             img_num += 1
@@ -66,7 +67,7 @@ class Predict:
         :return:
         '''
 
-        p_t_i=os.path.join(self.path,'protected','JPG_converts')
+        p_t_i=os.path.join(self.path,'protected', self.user,'JPG_converts')
         s_dict=self.make_seg_dict(idict) #need
 
         index=0
